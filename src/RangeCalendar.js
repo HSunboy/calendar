@@ -27,16 +27,18 @@ function normalizeAnchor(props, init) {
   const selectedValue = props.selectedValue || init && props.defaultSelectedValue;
   const value = props.value || init && props.defaultValue;
   const normalizedValue = value ?
-          getValueFromSelectedValue(value) :
-          getValueFromSelectedValue(selectedValue);
+    getValueFromSelectedValue(value) :
+    getValueFromSelectedValue(selectedValue);
   return !isEmptyArray(normalizedValue) ?
     normalizedValue : init && [moment(), moment().add(1, 'months')];
 }
 
-function generateOptions(length) {
-  const arr = [];
+function generateOptions(length, extraOptionGen) {
+  const arr = extraOptionGen ? extraOptionGen() : [];
   for (let value = 0; value < length; value++) {
-    arr.push(value);
+    if (arr.indexOf(value) === -1) {
+      arr.push(value);
+    }
   }
   return arr;
 }
@@ -276,6 +278,8 @@ const RangeCalendar = createReactClass({
   // get disabled hours for second picker
   getEndDisableTime() {
     const { selectedValue, value } = this.state;
+    const { disabledTime } = this.props;
+    const userSettingDisabledTime = disabledTime(null, 'end') || {};
     const startValue = selectedValue && selectedValue[0] || value[0].clone();
     // if startTime and endTime is same day..
     // the second time picker will not able to pick time before first time picker
@@ -283,9 +287,10 @@ const RangeCalendar = createReactClass({
       const hours = startValue.hour();
       const minutes = startValue.minute();
       const second = startValue.second();
-      const disabledHours = generateOptions(hours);
-      const disabledMinutes = generateOptions(minutes);
-      const disabledSeconds = generateOptions(second);
+      let { disabledHours, disabledMinutes, disabledSeconds } = userSettingDisabledTime;
+      disabledHours = generateOptions(hours, disabledHours);
+      disabledMinutes = generateOptions(minutes, disabledMinutes);
+      disabledSeconds = generateOptions(second, disabledSeconds);
       return {
         disabledHours() {
           return disabledHours;
@@ -304,12 +309,12 @@ const RangeCalendar = createReactClass({
         },
       };
     }
-    return null;
+    return userSettingDisabledTime;
   },
 
   isAllowedDateAndTime(selectedValue) {
     return isAllowedDate(selectedValue[0], this.props.disabledDate, this.disabledStartTime) &&
-    isAllowedDate(selectedValue[1], this.props.disabledDate, this.disabledEndTime);
+      isAllowedDate(selectedValue[1], this.props.disabledDate, this.disabledEndTime);
   },
 
   hasSelectedValue() {
@@ -435,7 +440,7 @@ const RangeCalendar = createReactClass({
       selectedValue: state.selectedValue,
       onSelect: this.onSelect,
       onDayHover: type === 'start' && selectedValue[1] ||
-      type === 'end' && selectedValue[0] || !!hoverValue.length ?
+        type === 'end' && selectedValue[0] || !!hoverValue.length ?
         this.onDayHover : undefined,
     };
 
@@ -462,11 +467,11 @@ const RangeCalendar = createReactClass({
     const thisMonth = todayTime.month();
     const thisYear = todayTime.year();
     const isTodayInView =
-            startValue.year() === thisYear && startValue.month() === thisMonth ||
-            endValue.year() === thisYear && endValue.month() === thisMonth;
+      startValue.year() === thisYear && startValue.month() === thisMonth ||
+      endValue.year() === thisYear && endValue.month() === thisMonth;
     const nextMonthOfStart = startValue.clone().add(1, 'months');
     const isClosestMonths = nextMonthOfStart.year() === endValue.year() &&
-            nextMonthOfStart.month() === endValue.month();
+      nextMonthOfStart.month() === endValue.month();
     return (
       <div
         ref={this.saveRoot}
