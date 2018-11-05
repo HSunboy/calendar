@@ -1,5 +1,5 @@
 {
-  "name": "rc-calendar",
+  "name": "dt-rc-calendar",
   "version": "9.0.5",
   "description": "React Calendar",
   "keywords": [
@@ -25,14 +25,14 @@
       "./src/index.js"
     ]
   },
-  "homepage": "http://github.com/react-component/calendar",
-  "author": "yiminghe@gmail.com",
+  "homepage": "https://github.com/HSunboy/calendar",
+  "author": "shankarxue@foxmail.com",
   "repository": {
     "type": "git",
-    "url": "git@github.com:react-component/calendar.git"
+    "url": "https://github.com/HSunboy/calendar.git"
   },
   "bugs": {
-    "url": "http://github.com/react-component/calendar/issues"
+    "url": "https://github.com/HSunboy/calendar/issues"
   },
   "licenses": "MIT",
   "config": {
