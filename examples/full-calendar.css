@@ -82,7 +82,6 @@
   position: relative;
 }
 .rc-select-selection--single .rc-select-selection-selected-value {
-  pointer-events: none;
   position: absolute;
   left: 0;
   top: 0;

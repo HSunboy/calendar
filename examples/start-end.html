@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>start-end.js - example - rc-calendar@9.7.11</title>
+  <title>start-end.js - example - dt-rc-calendar@9.0.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,13 +257,13 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="start-end.css" />
+  <link rel="stylesheet" href="start-end.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-calendar@9.7.11</h1>
+      <h1>dt-rc-calendar@9.0.6</h1>
 
       <p>React Calendar</p>
     </div>
@@ -271,14 +271,14 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
     <div class="highlight"><pre><code language="undefined">/* eslint react/no-multi-comp:0, no-console:0 */
 
-import 'rc-calendar/assets/index.css';
+import 'rc-calendar/assets/index.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Calendar from 'rc-calendar';
-import DatePicker from 'rc-calendar/lib/Picker';
+import DatePicker from 'rc-calendar/src/Picker';
 
-import zhCN from 'rc-calendar/lib/locale/zh_CN';
-import enUS from 'rc-calendar/lib/locale/en_US';
+import zhCN from 'rc-calendar/src/locale/zh_CN';
+import enUS from 'rc-calendar/src/locale/en_US';
 import 'rc-time-picker/assets/index.css';
 import TimePickerPanel from 'rc-time-picker/lib/Panel';
 
@@ -309,12 +309,13 @@ const timePickerElement = &lt;TimePickerPanel /&gt;;
 
 const SHOW_TIME = true;
 
-class Picker extends React.Component {
-  state = {
-    showTime: SHOW_TIME,
-    disabled: false,
-  };
-
+const Picker = React.createClass({
+  getDefaultProps() {
+    return {
+      showTime: SHOW_TIME,
+      disabled: false,
+    };
+  },
   render() {
     const props = this.props;
     const calendar = (&lt;Calendar
@@ -346,23 +347,25 @@ class Picker extends React.Component {
         }
       }
     &lt;/DatePicker&gt;);
-  }
-}
+  },
+});
 
-class Demo extends React.Component {
-  state = {
-    startValue: null,
-    endValue: null,
-  };
+const Test = React.createClass({
+  getInitialState() {
+    return {
+      startValue: null,
+      endValue: null,
+    };
+  },
 
-  onChange = (field, value) =&gt; {
+  onChange(field, value) {
     console.log('onChange', field, value &amp;&amp; value.format(getFormat(SHOW_TIME)));
     this.setState({
       [field]: value,
     });
-  }
+  },
 
-  disabledEndDate = (endValue) =&gt; {
+  disabledEndDate(endValue) {
     if (!endValue) {
       return false;
     }
@@ -372,9 +375,9 @@ class Demo extends React.Component {
     }
     return SHOW_TIME ? endValue.isBefore(startValue) :
     endValue.diff(startValue, 'days') &lt;= 0;
-  }
+  },
 
-  disabledStartDate = (startValue) =&gt; {
+  disabledStartDate(startValue) {
     if (!startValue) {
       return false;
     }
@@ -384,7 +387,7 @@ class Demo extends React.Component {
     }
     return SHOW_TIME ? endValue.isBefore(startValue) :
     endValue.diff(startValue, 'days') &lt;= 0;
-  }
+  },
 
   render() {
     const state = this.state;
@@ -407,14 +410,14 @@ class Demo extends React.Component {
         /&gt;
       &lt;/p&gt;
     &lt;/div&gt;);
-  }
-}
+  },
+});
 
 
-ReactDOM.render(&lt;Demo /&gt;, document.getElementById('__react-content'));
+ReactDOM.render(&lt;Test /&gt;, document.getElementById('__react-content'));
 </code></pre></div>
   </div>
-  <a href="http://github.com/react-component/calendar">
+  <a href="https://github.com/HSunboy/calendar">
     <img style="position: absolute; top: 0; right: 0; border: 0;"
          src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
          alt="Fork me on GitHub"

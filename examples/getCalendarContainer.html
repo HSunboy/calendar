@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>getCalendarContainer.js - example - rc-calendar@9.7.11</title>
+  <title>getCalendarContainer.js - example - dt-rc-calendar@9.0.6</title>
   <meta name="viewport"
         content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
   <meta charset="utf-8"/>
@@ -257,28 +257,28 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
   }
   </script>
-  <link rel="stylesheet" href="../common.css" /><link rel="stylesheet" href="getCalendarContainer.css" />
+  <link rel="stylesheet" href="getCalendarContainer.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>rc-calendar@9.7.11</h1>
+      <h1>dt-rc-calendar@9.0.6</h1>
 
       <p>React Calendar</p>
     </div>
     <div class="example" id="__react-content"></div>
 
-    <div class="highlight"><pre><code language="undefined">import 'rc-calendar/assets/index.css';
+    <div class="highlight"><pre><code language="undefined">import 'rc-calendar/assets/index.less';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Calendar from 'rc-calendar';
-import DatePicker from 'rc-calendar/lib/Picker';
+import DatePicker from 'rc-calendar/src/Picker';
 import Dialog from 'rc-dialog';
 import 'rc-dialog/assets/index.css';
 
-import zhCN from 'rc-calendar/lib/locale/zh_CN';
-import enUS from 'rc-calendar/lib/locale/en_US';
+import zhCN from 'rc-calendar/src/locale/zh_CN';
+import enUS from 'rc-calendar/src/locale/en_US';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -297,36 +297,32 @@ if (cn) {
 const defaultCalendarValue = now.clone();
 defaultCalendarValue.add(-1, 'month');
 
-class Demo extends React.Component {
-  state = {
-    open: false,
-    destroy: false,
-  };
-
+const Test = React.createClass({
+  getInitialState() {
+    return {
+      open: false,
+      destroy: false,
+    };
+  },
   getCalendarContainer() {
-    return this.d || document.getElementById('d');
-  }
-
+    return this.refs.d || document.getElementById('d');
+  },
   setVisible(open) {
     this.setState({
       open,
     });
-  }
-
-  open = () =&gt; {
+  },
+  open() {
     this.setVisible(true);
-  }
-
-  close = () =&gt; {
+  },
+  close() {
     this.setVisible(false);
-  }
-
-  destroy = () =&gt; {
+  },
+  destroy() {
     this.setState({
       destroy: true,
     });
-  }
-
+  },
   render() {
     if (this.state.destroy) {
       return null;
@@ -336,7 +332,7 @@ class Demo extends React.Component {
       &amp;nbsp;
       &lt;button onClick={this.destroy}&gt;destroy&lt;/button&gt;
       &lt;Dialog visible={this.state.open} onClose={this.close}&gt;
-        &lt;div id="d" ref={n =&gt; (this.d = n)} /&gt;
+        &lt;div id="d" ref="d"/&gt;
         &lt;div style={{ marginTop: 20 }}&gt;
           &lt;DatePicker
             getCalendarContainer={this.getCalendarContainer}
@@ -359,13 +355,13 @@ class Demo extends React.Component {
         &lt;/div&gt;
       &lt;/Dialog&gt;
     &lt;/div&gt;);
-  }
-}
+  },
+});
 
-ReactDOM.render(&lt;Demo /&gt;, document.getElementById('__react-content'));
+ReactDOM.render(&lt;Test /&gt;, document.getElementById('__react-content'));
 </code></pre></div>
   </div>
-  <a href="http://github.com/react-component/calendar">
+  <a href="https://github.com/HSunboy/calendar">
     <img style="position: absolute; top: 0; right: 0; border: 0;"
          src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
          alt="Fork me on GitHub"
